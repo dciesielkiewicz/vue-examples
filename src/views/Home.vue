@@ -1,18 +1,25 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div>
+    <div class="mb-4">
+      <h4 class="text-h4">Welcome to My Vue Examples.</h4>
+    </div>
+    <div class="mb-16">
+      <p class="text-body-1">Pick a project you want to discover.</p>
+    </div>
+    <v-btn link :to="TODO_PATH" color="primary"> Go to TODO App </v-btn>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import { TODO_PATH } from "@/router/paths";
 
 export default Vue.extend({
   name: "Home",
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      TODO_PATH,
+    };
   },
 });
 </script>
