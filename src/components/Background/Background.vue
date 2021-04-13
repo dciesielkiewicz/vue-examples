@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+  <div class="background" data-testid="background">
     <slot />
   </div>
 </template>
