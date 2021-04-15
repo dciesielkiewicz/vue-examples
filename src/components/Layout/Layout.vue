@@ -5,7 +5,7 @@
       <v-container>
         <v-row justify="center">
           <v-col xs="12" sm="8" lg="6">
-            <div class="pt-16 pb-8">
+            <div class="pt-12 pb-8">
               <slot />
             </div>
           </v-col>
