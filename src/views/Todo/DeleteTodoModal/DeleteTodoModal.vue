@@ -1,22 +1,17 @@
 <template>
   <v-dialog
+    v-if="todo"
     aria-labelledby="delete-todo-title"
-    v-model="deleteDialogOpened"
+    v-model="todo"
     width="400"
   >
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn aria-label="Delete todo" icon v-bind="attrs" v-on="on">
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-    </template>
-
     <v-card>
       <v-card-title class="headline" id="delete-todo-title">
         Delete Todo
       </v-card-title>
 
       <v-card-text>
-        Are you sure you want to delete todo: {{ title }}?
+        Are you sure you want to delete todo: {{ todo.title }}?
       </v-card-text>
 
       <v-divider></v-divider>
@@ -25,7 +20,7 @@
         <v-spacer></v-spacer>
         <v-row dense align="center" justify="center">
           <v-col>
-            <v-btn color="primary" text @click="deleteDialogOpened = false">
+            <v-btn color="primary" text @click="closeDeleteModal">
               Cancel
             </v-btn>
           </v-col>
@@ -39,24 +34,28 @@
 </template>
 
 <script lang="ts">
-import { ref, SetupContext } from "@vue/composition-api";
+import { PropType } from "vue";
+import { SetupContext } from "@vue/composition-api";
+import { ITodo } from "../types";
 
 interface IDeleteTodoModalProps {
-  title?: string;
+  todo?: ITodo;
 }
 
 export default {
+  props: {
+    todo: Object as PropType<ITodo>,
+  },
   setup(props: IDeleteTodoModalProps, context: SetupContext) {
-    const title = props.title;
-    const deleteDialogOpened = ref<boolean>(false);
-    const closeDeleteDialog = () => context.emit("closeDeleteDialog");
-    const deleteTodo = () => context.emit("deleteTodo");
+    const closeDeleteModal = () => context.emit("closeDeleteModal");
+    const deleteTodo = () => {
+      context.emit("deleteTodo", props.todo);
+      closeDeleteModal();
+    };
 
     return {
-      closeDeleteDialog,
-      deleteDialogOpened,
+      closeDeleteModal,
       deleteTodo,
-      title,
     };
   },
 };

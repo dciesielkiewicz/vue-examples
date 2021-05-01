@@ -47,11 +47,14 @@
               </v-col>
               <v-col>
                 <LoadingButton v-if="todo.deleteLoading" />
-                <DeleteTodoModal
+                <v-btn
                   v-else
-                  :title="title"
-                  @deleteTodo="deleteTodo"
-                />
+                  aria-label="Delete todo"
+                  icon
+                  @click="openDeleteModal"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -72,7 +75,6 @@ import {
 } from "@vue/composition-api";
 import { LoadingButton } from "@/components";
 import { titleRequiredRule } from "../constants";
-import { DeleteTodoModal } from "../DeleteTodoModal";
 import { ITodo, ITodoFormData, IVuetifyFormRef } from "../types";
 
 interface ITodoItemProps {
@@ -81,7 +83,6 @@ interface ITodoItemProps {
 
 export default {
   components: {
-    DeleteTodoModal,
     LoadingButton,
   },
   props: {
@@ -104,7 +105,6 @@ export default {
     const setSubmitting = (submitting: boolean) =>
       (isSubmitting.value = submitting);
 
-    const deleteTodo = () => context.emit("deleteTodo", todo);
     const disableEdit = () => (editable.value = false);
     const enableEdit = () => {
       editable.value = true;
@@ -118,6 +118,7 @@ export default {
         });
       }
     };
+    const openDeleteModal = () => context.emit("openDeleteModal", todo);
     const toggleTodo = () => context.emit("toggleTodo", todo);
 
     watch(
@@ -130,12 +131,12 @@ export default {
 
     return {
       ...toRefs(formData),
-      deleteTodo,
       editable,
       enableEdit,
       formRef,
       inputRef,
       isSubmitting,
+      openDeleteModal,
       submitHandler,
       toggleTodo,
     };
