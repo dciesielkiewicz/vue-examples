@@ -26,9 +26,8 @@ const props = {
 
 describe("TodoItem", () => {
   test("Should properly call toggle checked handler while clicking at checkbox", () => {
-    const { container, emitted } = render(TodoItem, { props });
-    const checkbox = container.querySelector("input[type=checkbox]");
-    checkbox && fireEvent.click(checkbox);
+    const { getByLabelText, emitted } = render(TodoItem, { props });
+    fireEvent.click(getByLabelText("Toggle todo"));
 
     expect(emitted().toggleTodo).toBeTruthy();
     expect(emitted().toggleTodo[0]).toEqual([todo]);

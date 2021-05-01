@@ -9,7 +9,11 @@
       <div class="wrapper pt-2 pb-2">
         <v-row align="center" justify="center">
           <v-col class="shrink-column mr-2">
-            <v-checkbox v-model="checked" @change="toggleTodo" />
+            <v-checkbox
+              aria-label="Toggle todo"
+              v-model="checked"
+              @change="toggleTodo"
+            />
           </v-col>
           <v-col>
             <v-text-field
