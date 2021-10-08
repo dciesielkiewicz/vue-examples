@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { ToRefs } from "@vue/composition-api";
 
 export interface IVuetifyFormRef extends Vue {
@@ -31,6 +32,12 @@ export interface ITodo extends INewTodo {
 export interface ITodoFormData extends INewTodoFormData {
   checked: boolean;
 }
+
+export interface ITodoVariables {
+  todo: INewTodo;
+}
+
+export type TTodoResponse = AxiosResponse<ITodo>;
 
 export interface ITodoFormHelpers {
   disableEdit: () => void;

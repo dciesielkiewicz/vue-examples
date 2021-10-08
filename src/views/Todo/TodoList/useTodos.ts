@@ -8,6 +8,8 @@ import {
   ITodo,
   ITodoFormData,
   ITodoFormHelpers,
+  ITodoVariables,
+  TTodoResponse,
   TUseTodosReturn,
 } from "../types";
 
@@ -43,7 +45,10 @@ export const useTodos = (): TUseTodosReturn => {
       checked: false,
     };
     try {
-      const response = await axios.post<ITodo>("/todos", { todo });
+      const response = await axios.post<ITodoVariables, TTodoResponse>(
+        "/todos",
+        { todo }
+      );
       todos.value.push(response.data);
       resetForm();
       resetValidation();
@@ -60,7 +65,7 @@ export const useTodos = (): TUseTodosReturn => {
   const deleteTodo = async (todo: ITodo) => {
     todo.deleteLoading = true;
     try {
-      await axios.delete<ITodo>(`/todos/${todo.id}`);
+      await axios.delete(`/todos/${todo.id}`);
       const index = todos.value.findIndex(({ id }) => id === todo.id);
       todos.value.splice(index, 1);
     } catch {
@@ -77,7 +82,7 @@ export const useTodos = (): TUseTodosReturn => {
     const checked = todo.checked;
     todo.checked = !todo.checked;
     try {
-      await axios.put<ITodo>(`/todos/${todo.id}`, {
+      await axios.put<ITodoVariables>(`/todos/${todo.id}`, {
         todo: {
           checked: todo.checked,
           title: todo.title,
@@ -99,11 +104,14 @@ export const useTodos = (): TUseTodosReturn => {
   ) => {
     setSubmitting(true);
     try {
-      const resposnse = await axios.put<ITodo>(`/todos/${todo.id}`, {
-        todo: formData,
-      });
-      todo.checked = resposnse.data.checked;
-      todo.title = resposnse.data.title;
+      const response = await axios.put<ITodoVariables, TTodoResponse>(
+        `/todos/${todo.id}`,
+        {
+          todo: formData,
+        }
+      );
+      todo.checked = response.data.checked;
+      todo.title = response.data.title;
       disableEdit();
     } catch {
       Vue.$toast.open({

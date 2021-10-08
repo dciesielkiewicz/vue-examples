@@ -1,10 +1,10 @@
 <template>
-  <v-dialog
-    v-if="todo"
-    aria-labelledby="delete-todo-title"
-    v-model="todo"
-    width="400"
-  >
+  <v-dialog aria-labelledby="delete-todo-title" width="400" v-model="dialog">
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn aria-label="Delete todo" icon v-bind="attrs" v-on="on">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </template>
     <v-card>
       <v-card-title class="headline" id="delete-todo-title">
         Delete Todo
@@ -20,12 +20,10 @@
         <v-spacer></v-spacer>
         <v-row dense align="center" justify="center">
           <v-col>
-            <v-btn color="primary" text @click="closeDeleteModal">
-              Cancel
-            </v-btn>
+            <v-btn color="primary" text @click="dialog = false">Cancel</v-btn>
           </v-col>
           <v-col>
-            <v-btn color="primary" @click="deleteTodo"> Delete </v-btn>
+            <v-btn color="primary" @click="deleteTodo">Delete</v-btn>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -47,15 +45,11 @@ export default {
     todo: Object as PropType<ITodo>,
   },
   setup(props: IDeleteTodoModalProps, context: SetupContext) {
-    const closeDeleteModal = () => context.emit("closeDeleteModal");
-    const deleteTodo = () => {
-      context.emit("deleteTodo", props.todo);
-      closeDeleteModal();
-    };
+    const deleteTodo = () => context.emit("deleteTodo");
 
     return {
-      closeDeleteModal,
       deleteTodo,
+      dialog: false,
     };
   },
 };
