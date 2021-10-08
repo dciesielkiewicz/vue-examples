@@ -42,11 +42,10 @@ describe("TodoItem", () => {
   });
 
   test("Should switch form to editable while clicking edit button", async () => {
-    const {
-      getByLabelText,
-      queryByText,
-      getByPlaceholderText,
-    } = render(TodoItem, { props });
+    const { getByLabelText, queryByText, getByPlaceholderText } = render(
+      TodoItem,
+      { props }
+    );
     await waitFor(() => fireEvent.click(getByLabelText("Edit todo")));
 
     expect(queryByText(todo.title)).toBeNull();
@@ -54,11 +53,10 @@ describe("TodoItem", () => {
   });
 
   test("Should properly switch form to editable while clicking edit button and focus input", async () => {
-    const {
-      getByLabelText,
-      getByPlaceholderText,
-      queryByText,
-    } = render(TodoItem, { props });
+    const { getByLabelText, getByPlaceholderText, queryByText } = render(
+      TodoItem,
+      { props }
+    );
 
     await waitFor(() => fireEvent.click(getByLabelText("Edit todo")));
 
@@ -114,13 +112,5 @@ describe("TodoItem", () => {
       formData,
       { disableEdit, setSubmitting },
     ]);
-  });
-
-  test("Should properly call delete handler", () => {
-    const { emitted, getByLabelText } = render(TodoItem, { props });
-    fireEvent.click(getByLabelText("Delete todo"));
-
-    expect(emitted().openDeleteModal).toBeTruthy();
-    expect(emitted().openDeleteModal[0]).toEqual([todo]);
   });
 });

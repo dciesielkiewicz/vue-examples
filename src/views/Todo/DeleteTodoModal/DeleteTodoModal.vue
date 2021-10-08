@@ -1,7 +1,7 @@
 <template>
   <v-dialog aria-labelledby="delete-todo-title" width="400" v-model="dialog">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn aria-label="Delete todo" icon v-bind="attrs" v-on="on">
+      <v-btn aria-label="Delete todo button" icon v-bind="attrs" v-on="on">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
     </template>

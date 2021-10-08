@@ -1,4 +1,4 @@
-# Vue examples
+# Vuetify examples
 
 In this repository you can find my code samples imlemented in Todo app
 

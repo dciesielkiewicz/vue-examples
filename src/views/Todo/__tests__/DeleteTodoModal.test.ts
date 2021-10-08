@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/vue";
+import { fireEvent, waitFor } from "@testing-library/vue";
 import { render } from "@tests/utils";
 import { DeleteTodoModal } from "../DeleteTodoModal";
 import { ITodo } from "../types";
@@ -16,12 +16,13 @@ const props = {
 
 describe("DeleteTodoModal", () => {
   test("Should not render closed modal", () => {
-    const { queryByText } = render(DeleteTodoModal);
+    const { queryByText } = render(DeleteTodoModal, { props });
     expect(queryByText("Delete Todo")).toBeNull();
   });
 
-  test("Should render modal and todo", () => {
-    const { getByText } = render(DeleteTodoModal, { props });
+  test("Should render modal and todo", async () => {
+    const { getByLabelText, getByText } = render(DeleteTodoModal, { props });
+    await waitFor(() => fireEvent.click(getByLabelText("Delete todo button")));
     expect(getByText("Delete Todo")).toBeInTheDocument();
     expect(
       getByText(`Are you sure you want to delete todo: ${todo.title}?`)
@@ -30,18 +31,12 @@ describe("DeleteTodoModal", () => {
     expect(getByText("Delete")).toBeInTheDocument();
   });
 
-  test("Should properly close modal", () => {
-    const { emitted, getByText } = render(DeleteTodoModal, {
+  test("Should properly trigger delete action", async () => {
+    const { emitted, getByLabelText, getByText } = render(DeleteTodoModal, {
       props,
     });
-    fireEvent.click(getByText("Cancel"));
-    expect(emitted().closeDeleteModal).toBeTruthy();
-  });
-
-  test("Should properly trigger delete action", () => {
-    const { emitted, getByText } = render(DeleteTodoModal, { props });
-    fireEvent.click(getByText("Delete"));
+    await waitFor(() => fireEvent.click(getByLabelText("Delete todo button")));
+    await waitFor(() => fireEvent.click(getByText("Delete")));
     expect(emitted().deleteTodo).toBeTruthy();
-    expect(emitted().deleteTodo[0]).toEqual([todo]);
   });
 });
